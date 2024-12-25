@@ -38,7 +38,6 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
       onFileChange(newFile);
     }
 
-    // Handle removal
     function removeFile() {
       onFileChange(null);
       if (innerRef.current) {
