@@ -3,19 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --background: #18181b;
-  --foreground: #ffffff;
+  --app-background: #18181b;
+  --app-foreground: #ffffff;
   --font-geist-sans: "Geist Sans", sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--app-foreground);
+  background: var(--app-background);
   font-family: var(--font-geist-sans);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
   }
 }
