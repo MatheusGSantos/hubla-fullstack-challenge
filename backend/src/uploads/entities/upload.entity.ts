@@ -1,1 +1,5 @@
-export class Upload {}
+export class Upload {
+  id?: number;
+  filename: string;
+  createdAt?: Date;
+}
