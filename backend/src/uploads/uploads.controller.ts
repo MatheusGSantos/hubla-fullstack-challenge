@@ -21,7 +21,6 @@ export class UploadsController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor("file"))
   async create(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
     // needs to be .txt and not more than 500kb
     const improperFile =
       !file?.mimetype?.includes("text") || file.size > 500000;
