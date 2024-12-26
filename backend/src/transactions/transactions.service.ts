@@ -12,18 +12,25 @@ export class TransactionsService {
   }
 
   findAll() {
-    return `This action returns all transactions`;
+    return this.prisma.transaction.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} transaction`;
+    return this.prisma.transaction.findUnique({ where: { id } });
+  }
+
+  findManyByUploadId(uploadId: number) {
+    return this.prisma.transaction.findMany({ where: { uploadId } });
   }
 
   update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
+    return this.prisma.transaction.update({
+      where: { id },
+      data: updateTransactionDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} transaction`;
+    return this.prisma.transaction.delete({ where: { id } });
   }
 }
