@@ -2,22 +2,37 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Delete,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadsService } from "./uploads.service";
-import { CreateUploadDto } from "./dto/create-upload.dto";
+import { BadRequestError } from "src/errors/bad-request.error";
 
 @Controller("uploads")
 export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
   @Post()
-  create(@Body() createUploadDto: CreateUploadDto) {
-    return this.uploadsService.create(createUploadDto);
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor("file"))
+  async create(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    // needs to be .txt and not more than 500kb
+    const improperFile =
+      !file?.mimetype?.includes("text") || file.size > 500000;
+
+    if (improperFile) {
+      throw new BadRequestError(
+        "File must be a .txt file and not more than 500kb",
+      );
+    }
+
+    this.uploadsService.create({ file });
   }
 
   @Get()

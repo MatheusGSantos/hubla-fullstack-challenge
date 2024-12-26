@@ -1,7 +1,6 @@
-import { IsString } from "class-validator";
-import { Upload } from "../entities/upload.entity";
+import { IsNotEmpty } from "class-validator";
 
-export class CreateUploadDto extends Upload {
-  @IsString()
-  filename: string;
+export class CreateUploadDto {
+  @IsNotEmpty()
+  file: Express.Multer.File;
 }
