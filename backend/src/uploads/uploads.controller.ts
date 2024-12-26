@@ -41,12 +41,12 @@ export class UploadsController {
 
   @Get(":id")
   findOne(@Param("id") id: number) {
-    return this.uploadsService.findOne(+id);
+    return this.uploadsService.findOne(id);
   }
 
   @Delete(":id")
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param("id") id: number) {
-    this.uploadsService.remove(+id);
+    this.uploadsService.remove(id);
   }
 }
