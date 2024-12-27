@@ -2,22 +2,50 @@
 import { Button } from "@/components/ui/button";
 import { FileInput } from "@/components/ui/fileInput";
 import { Loader } from "@/components/ui/loader";
+import { postUpload } from "@/services/postUpload";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function UploadForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const router = useRouter();
+
+  function handleSelectFile(file: File | null) {
+    setError(false);
+    setSelectedFile(file);
+  }
+
+  function handleUpload() {
+    if (!selectedFile) return;
+
+    setLoading(true);
+
+    postUpload(selectedFile)
+      .then(() => {
+        router.push("/uploads/success");
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+        toast.error("Erro ao fazer upload do arquivo");
+      });
+  }
+
   return (
     <div className="w-full max-w-xl flex flex-col gap-10">
       <FileInput
         accept=".txt"
-        onFileChange={setSelectedFile}
+        onFileChange={handleSelectFile}
+        hasError={error}
         selectedFile={selectedFile}
       />
       <Button
         className="w-full"
         disabled={!selectedFile || loading}
-        onClick={() => setLoading(true)}
+        onClick={handleUpload}
       >
         Enviar
       </Button>

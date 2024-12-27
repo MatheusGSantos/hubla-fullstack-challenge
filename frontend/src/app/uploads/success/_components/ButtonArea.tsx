@@ -11,9 +11,7 @@ export default function ButtonArea() {
       <Button variant={"outline"} onClick={() => router.push("/uploads/new")}>
         Novo Upload
       </Button>
-      <Button onClick={() => router.push("/transactions")}>
-        Ver transações
-      </Button>
+      <Button onClick={() => router.push("/transactions")}>Ver uploads</Button>
     </div>
   );
 }

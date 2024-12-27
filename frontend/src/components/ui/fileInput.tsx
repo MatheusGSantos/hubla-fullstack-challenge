@@ -14,6 +14,7 @@ export interface FileInputProps
   label?: string;
   subLabel?: string;
   selectedFile: File | null;
+  hasError?: boolean;
   onFileChange: (file: File | null) => void;
 }
 
@@ -24,6 +25,7 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
       subLabel = "TXT (max. 500Kb)",
       selectedFile,
       onFileChange,
+      hasError,
       className,
       ...props
     },
@@ -66,15 +68,20 @@ export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
 
         {selectedFile ? (
           <div
+            data-error={hasError}
             className={clsx(
-              "flex items-center justify-between",
+              "group flex items-center justify-between",
               "rounded-md border border-gray-medium p-4",
               "text-sm text-muted-foreground",
+              "data-[error=true]:border-red-primary",
             )}
           >
             <div className="flex items-center space-x-3">
-              <FileIcon className="h-9 w-9" aria-hidden="true" />
-              <div className="flex flex-col gap-1">
+              <FileIcon
+                className="h-9 w-9 group-data-[error=true]:text-red-primary"
+                aria-hidden="true"
+              />
+              <div className="flex flex-col gap-1 flex-1">
                 <span className="text-white font-semibold text-base">
                   {selectedFile.name}
                 </span>
