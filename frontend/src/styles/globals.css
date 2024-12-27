@@ -18,6 +18,10 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .page {
+    @apply p-8 flex flex-col w-full h-screen;
+  }
 }
 
 @layer base {
