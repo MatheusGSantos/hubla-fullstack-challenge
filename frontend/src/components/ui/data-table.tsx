@@ -159,13 +159,22 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="rounded-md border">
+      <div className="border border-gray-light">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-black-primary">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    style={
+                      (
+                        header.column.columnDef.meta as {
+                          style?: React.CSSProperties;
+                        }
+                      )?.style
+                    }
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -177,7 +186,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-gray-medium">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
