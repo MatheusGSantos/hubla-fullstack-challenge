@@ -31,13 +31,15 @@ import {
 } from "lucide-react";
 import { Button } from "./button";
 import Link from "next/link";
+import { useMemo } from "react";
 
 interface DataTableProps<TData, TValue> {
   readonly columns: ColumnDef<TData, TValue>[];
   readonly data: TData[];
-  readonly pageCount: number;
-  readonly currentPage: number;
-  readonly perPage: number;
+  readonly usePagination?: boolean;
+  readonly pageCount?: number;
+  readonly currentPage?: number;
+  readonly perPage?: number;
 }
 
 interface DataTablePaginationProps<TData> {
@@ -138,85 +140,91 @@ export function DataTablePagination<TData>({
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageCount,
-  currentPage,
-  perPage,
+  usePagination = false,
+  pageCount = 0,
+  currentPage = 0,
+  perPage = 10,
 }: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    pageCount,
-    state: {
-      pagination: {
-        pageIndex: currentPage,
-        pageSize: perPage,
-      },
-    },
-    manualPagination: true, // Enable server-side pagination
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  const config = useMemo(() => {
+    if (usePagination) {
+      return {
+        data,
+        columns,
+        pageCount,
+        state: {
+          pagination: {
+            pageIndex: currentPage,
+            pageSize: perPage,
+          },
+        },
+        manualPagination: true, // Enable server-side pagination
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+      };
+    }
+
+    return {
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+    };
+  }, [columns, data, pageCount, currentPage, perPage, usePagination]);
+
+  const table = useReactTable(config);
 
   return (
     <>
-      <div className="border border-gray-light">
-        <Table>
-          <TableHeader className="bg-black-primary">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    style={
-                      (
-                        header.column.columnDef.meta as {
-                          style?: React.CSSProperties;
-                        }
-                      )?.style
-                    }
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
+      <Table>
+        <TableHeader className="bg-black-primary">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  style={
+                    (
+                      header.column.columnDef.meta as {
+                        style?: React.CSSProperties;
+                      }
+                    )?.style
+                  }
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody className="bg-gray-medium">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
                 ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody className="bg-gray-medium">
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <DataTablePagination table={table} />
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+
+      {usePagination && <DataTablePagination table={table} />}
     </>
   );
 }
