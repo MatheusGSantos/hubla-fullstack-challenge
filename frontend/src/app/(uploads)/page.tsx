@@ -1,9 +1,9 @@
 import { fetchUploads } from "@/services/fetchUploads";
 
-import { TableWithPagination } from "@/components/ui/table-with-pagination";
-import { TABLE_COLUMNS } from "./constants";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { DataTable } from "@/components/ui/data-table";
+import { TABLE_COLUMNS } from "./columns";
 
 interface PageProps {
   readonly searchParams: {
@@ -19,6 +19,7 @@ export default async function UploadListPage({ searchParams }: PageProps) {
   const perPage = searchParams.perPage
     ? parseInt(searchParams.perPage, 10)
     : 10;
+
   const { data, meta } = await fetchUploads({ currentPage, perPage });
 
   return (
@@ -29,7 +30,13 @@ export default async function UploadListPage({ searchParams }: PageProps) {
           <Link href="/uploads/new">Novo Upload</Link>
         </Button>
       </header>
-      <TableWithPagination columns={TABLE_COLUMNS} data={data} meta={meta} />
+      <DataTable
+        columns={TABLE_COLUMNS}
+        data={data}
+        pageCount={meta.lastPage}
+        currentPage={currentPage - 1} // Zero-based index for react-table
+        perPage={perPage}
+      />
     </div>
   );
 }
