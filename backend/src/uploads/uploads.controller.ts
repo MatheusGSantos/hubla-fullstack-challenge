@@ -41,7 +41,7 @@ export class UploadsController {
   @ApiPaginatedResponse(ReadUploadDto)
   findAll(
     @Query("page") page: number = 1,
-    @Query("limit") perPage: number = 10,
+    @Query("perPage") perPage: number = 10,
   ) {
     return this.uploadsService.findAll({ page, perPage });
   }

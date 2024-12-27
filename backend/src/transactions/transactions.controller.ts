@@ -27,7 +27,7 @@ export class TransactionsController {
   @ApiPaginatedResponse(ReadTransactionDto)
   findAll(
     @Query("page") page: number = 1,
-    @Query("limit") perPage: number = 10,
+    @Query("perPage") perPage: number = 10,
     @Query("uploadId") uploadId?: number,
   ) {
     if (uploadId) {
