@@ -11,6 +11,8 @@ import {
 import { TransactionsService } from "./transactions.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
+import { ReadTransactionDto } from "./dto/read-transaction.dto";
+import { ApiPaginatedResponse } from "src/decorators/api-paginated-response.decorator";
 
 @Controller("transactions")
 export class TransactionsController {
@@ -22,18 +24,19 @@ export class TransactionsController {
   }
 
   @Get()
+  @ApiPaginatedResponse(ReadTransactionDto)
   findAll(
-    @Query("page") page = 1,
-    @Query("limit") limit = 10,
+    @Query("page") page: number = 1,
+    @Query("limit") perPage: number = 10,
     @Query("uploadId") uploadId?: number,
   ) {
     if (uploadId) {
       return this.transactionsService.findManyByUploadId(uploadId, {
         page,
-        limit,
+        perPage,
       });
     }
-    return this.transactionsService.findAll({ page, limit });
+    return this.transactionsService.findAll({ page, perPage });
   }
 
   @Get(":id")

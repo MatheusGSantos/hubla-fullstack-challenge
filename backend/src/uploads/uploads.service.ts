@@ -4,6 +4,8 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma } from "@prisma/client";
 import { TransactionsService } from "src/transactions/transactions.service";
 import { BadRequestError } from "src/errors/bad-request.error";
+import { createPaginator } from "prisma-pagination";
+import { ReadUploadDto } from "./dto/read-upload.dto";
 
 @Injectable()
 export class UploadsService {
@@ -50,12 +52,18 @@ export class UploadsService {
     }
   }
 
-  findAll({ page, limit }: { page: number; limit: number }) {
-    const skip = (page - 1) * limit;
-    return this.prisma.upload.findMany({
-      skip,
-      take: limit,
-    });
+  findAll({ page, perPage }: { page: number; perPage: number }) {
+    const paginate = createPaginator({ perPage });
+
+    return paginate<ReadUploadDto, Prisma.TransactionFindManyArgs>(
+      this.prisma.upload,
+      {
+        orderBy: { id: "desc" },
+      },
+      {
+        page,
+      },
+    );
   }
 
   findOne(id: number) {

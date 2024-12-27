@@ -13,6 +13,8 @@ import {
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadsService } from "./uploads.service";
 import { BadRequestError } from "src/errors/bad-request.error";
+import { ApiPaginatedResponse } from "src/decorators/api-paginated-response.decorator";
+import { ReadUploadDto } from "./dto/read-upload.dto";
 
 @Controller("uploads")
 export class UploadsController {
@@ -36,8 +38,12 @@ export class UploadsController {
   }
 
   @Get()
-  findAll(@Query("page") page = 1, @Query("limit") limit = 10) {
-    return this.uploadsService.findAll({ page, limit });
+  @ApiPaginatedResponse(ReadUploadDto)
+  findAll(
+    @Query("page") page: number = 1,
+    @Query("limit") perPage: number = 10,
+  ) {
+    return this.uploadsService.findAll({ page, perPage });
   }
 
   @Get(":id")

@@ -2,6 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { createPaginator } from "prisma-pagination";
+import { ReadTransactionDto } from "./dto/read-transaction.dto";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class TransactionsService {
@@ -11,12 +14,18 @@ export class TransactionsService {
     return this.prisma.transaction.create({ data: createTransactionDto });
   }
 
-  findAll({ page, limit }: { page: number; limit: number }) {
-    const skip = (page - 1) * limit;
-    return this.prisma.transaction.findMany({
-      skip,
-      take: limit,
-    });
+  findAll({ page, perPage }: { page: number; perPage: number }) {
+    const paginate = createPaginator({ perPage });
+
+    return paginate<ReadTransactionDto, Prisma.TransactionFindManyArgs>(
+      this.prisma.transaction,
+      {
+        orderBy: { id: "desc" },
+      },
+      {
+        page,
+      },
+    );
   }
 
   findOne(id: number) {
@@ -25,14 +34,20 @@ export class TransactionsService {
 
   findManyByUploadId(
     uploadId: number,
-    { page, limit }: { page: number; limit: number },
+    { page, perPage }: { page: number; perPage: number },
   ) {
-    const skip = (page - 1) * limit;
-    return this.prisma.transaction.findMany({
-      where: { uploadId },
-      skip,
-      take: limit,
-    });
+    const paginate = createPaginator({ perPage });
+
+    return paginate<ReadTransactionDto, Prisma.TransactionFindManyArgs>(
+      this.prisma.transaction,
+      {
+        where: { uploadId },
+        orderBy: { id: "desc" },
+      },
+      {
+        page,
+      },
+    );
   }
 
   update(id: number, updateTransactionDto: UpdateTransactionDto) {
