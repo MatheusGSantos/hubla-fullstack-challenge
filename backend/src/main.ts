@@ -4,7 +4,7 @@ import { NotFoundInterceptor } from "./interceptors/not-found.interceptor";
 import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   // Pipes
   app.useGlobalPipes(
