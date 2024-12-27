@@ -36,7 +36,7 @@ export const TABLE_COLUMNS: ColumnDef<Upload>[] = [
       return (
         <div className="flex justify-end pr-5">
           <Link className="group" href={`/uploads/${id}`}>
-            <Eye className="group-hover:text-purple-primary" />
+            <Eye className="group-hover:text-blue-primary" />
           </Link>
         </div>
       );

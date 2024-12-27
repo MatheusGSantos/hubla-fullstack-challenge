@@ -26,8 +26,8 @@ export default async function UploadListPage({ searchParams }: PageProps) {
     <div className="page gap-8">
       <header className="flex items-center justify-between">
         <h1 className="text-4xl font-medium">Uploads</h1>
-        <Button asChild>
-          <Link href="/uploads/new">Novo Upload</Link>
+        <Button variant={"purple"} asChild>
+          <Link href="/uploads/new">New Upload</Link>
         </Button>
       </header>
       <DataTable
