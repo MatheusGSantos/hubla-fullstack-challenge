@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { TransactionsService } from "./transactions.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
@@ -21,8 +22,18 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll() {
-    return this.transactionsService.findAll();
+  findAll(
+    @Query("page") page = 1,
+    @Query("limit") limit = 10,
+    @Query("uploadId") uploadId?: number,
+  ) {
+    if (uploadId) {
+      return this.transactionsService.findManyByUploadId(uploadId, {
+        page,
+        limit,
+      });
+    }
+    return this.transactionsService.findAll({ page, limit });
   }
 
   @Get(":id")

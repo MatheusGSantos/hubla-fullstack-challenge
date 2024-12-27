@@ -50,15 +50,19 @@ export class UploadsService {
     }
   }
 
-  findAll() {
-    return `This action returns all uploads`;
+  findAll({ page, limit }: { page: number; limit: number }) {
+    const skip = (page - 1) * limit;
+    return this.prisma.upload.findMany({
+      skip,
+      take: limit,
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} upload`;
+    return this.prisma.upload.findUnique({ where: { id } });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} upload`;
+    this.prisma.upload.delete({ where: { id } });
   }
 }

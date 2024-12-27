@@ -8,6 +8,7 @@ import {
   HttpStatus,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadsService } from "./uploads.service";
@@ -35,8 +36,8 @@ export class UploadsController {
   }
 
   @Get()
-  findAll() {
-    return this.uploadsService.findAll();
+  findAll(@Query("page") page = 1, @Query("limit") limit = 10) {
+    return this.uploadsService.findAll({ page, limit });
   }
 
   @Get(":id")

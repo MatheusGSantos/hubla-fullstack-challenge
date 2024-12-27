@@ -11,16 +11,28 @@ export class TransactionsService {
     return this.prisma.transaction.create({ data: createTransactionDto });
   }
 
-  findAll() {
-    return this.prisma.transaction.findMany();
+  findAll({ page, limit }: { page: number; limit: number }) {
+    const skip = (page - 1) * limit;
+    return this.prisma.transaction.findMany({
+      skip,
+      take: limit,
+    });
   }
 
   findOne(id: number) {
     return this.prisma.transaction.findUnique({ where: { id } });
   }
 
-  findManyByUploadId(uploadId: number) {
-    return this.prisma.transaction.findMany({ where: { uploadId } });
+  findManyByUploadId(
+    uploadId: number,
+    { page, limit }: { page: number; limit: number },
+  ) {
+    const skip = (page - 1) * limit;
+    return this.prisma.transaction.findMany({
+      where: { uploadId },
+      skip,
+      take: limit,
+    });
   }
 
   update(id: number, updateTransactionDto: UpdateTransactionDto) {
