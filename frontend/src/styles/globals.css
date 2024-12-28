@@ -20,7 +20,7 @@ body {
   }
 
   .page {
-    @apply p-8 flex flex-col w-full h-screen;
+    @apply p-8 flex flex-col w-full min-h-screen overflow-auto;
   }
 }
 
