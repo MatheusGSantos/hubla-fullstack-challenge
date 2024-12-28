@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { FileInput } from "@/components/ui/fileInput";
 import { Loader } from "@/components/ui/loader";
+import { DEFAULT_ERROR_MESSAGE } from "@/lib/utils";
 import { postUpload } from "@/services/postUpload";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,10 +28,11 @@ export function UploadForm() {
       .then(() => {
         router.push("/uploads/success");
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         setLoading(false);
         setError(true);
-        toast.error("Erro ao fazer upload do arquivo");
+        toast.error(DEFAULT_ERROR_MESSAGE);
       });
   }
 
