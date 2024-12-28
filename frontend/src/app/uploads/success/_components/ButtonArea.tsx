@@ -9,9 +9,9 @@ export default function ButtonArea() {
   return (
     <div className="flex gap-4">
       <Button variant={"outline"} onClick={() => router.push("/uploads/new")}>
-        Novo Upload
+        New Upload
       </Button>
-      <Button onClick={() => router.push("/transactions")}>Ver uploads</Button>
+      <Button onClick={() => router.push("/uploads")}>See Uploads</Button>
     </div>
   );
 }

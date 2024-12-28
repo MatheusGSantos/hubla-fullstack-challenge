@@ -21,7 +21,7 @@ export interface FileInputProps
 export const FileInput = React.forwardRef<HTMLInputElement, FileInputProps>(
   function FileInput(
     {
-      label = "Clique para inserir o arquivo",
+      label = "Click here to upload a file",
       subLabel = "TXT (max. 500Kb)",
       selectedFile,
       onFileChange,

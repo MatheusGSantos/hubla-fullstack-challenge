@@ -1,10 +1,9 @@
-import { fetchUploads } from "@/services/fetchUploads";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { DataTable } from "@/components/ui/data-table";
-import { TABLE_COLUMNS } from "./columns";
+import { LoadingPagination, LoadingTable } from "@/components/ui/data-table";
 import { Upload } from "lucide-react";
+import { Suspense } from "react";
+import Content from "./Content";
 
 interface PageProps {
   readonly searchParams: {
@@ -13,7 +12,7 @@ interface PageProps {
   };
 }
 
-export default async function UploadList({ searchParams }: PageProps) {
+export default async function UploadListPage({ searchParams }: PageProps) {
   const currentPage = searchParams.currentPage
     ? parseInt(searchParams.currentPage, 10)
     : 1;
@@ -21,12 +20,10 @@ export default async function UploadList({ searchParams }: PageProps) {
     ? parseInt(searchParams.perPage, 10)
     : 10;
 
-  const { data, meta } = await fetchUploads({ currentPage, perPage });
-
   return (
-    <div className="page gap-8">
+    <div className="page gap-10">
       <header className="flex items-center justify-between">
-        <h1 className="text-4xl font-medium">Uploads</h1>
+        <h1 className="text-4xl font-medium">Upload History</h1>
         <Button asChild>
           <Link href="/uploads/new">
             <Upload className="w-6 h-6" />
@@ -34,14 +31,16 @@ export default async function UploadList({ searchParams }: PageProps) {
           </Link>
         </Button>
       </header>
-      <DataTable
-        columns={TABLE_COLUMNS}
-        data={data}
-        pageCount={meta.lastPage}
-        currentPage={currentPage - 1} // Zero-based index for react-table
-        perPage={perPage}
-        usePagination
-      />
+      <Suspense
+        fallback={
+          <>
+            <LoadingTable />
+            <LoadingPagination />
+          </>
+        }
+      >
+        <Content currentPage={currentPage} perPage={perPage} />
+      </Suspense>
     </div>
   );
 }

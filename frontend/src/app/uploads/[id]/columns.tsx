@@ -79,10 +79,24 @@ export const TABLE_COLUMNS: ColumnDef<Transaction>[] = [
     accessorKey: "value",
     cell: ({ row }) => {
       const value = row.getValue("value") as number;
-      // value is in cents, transform to dollars and format to 2 decimal places
-      const formatted = `$ ${(value / 100).toFixed(2)}`;
+      const type = row.getValue("type") as number;
+      const operation = {
+        sign: "",
+        color: "",
+      };
 
-      return <div>{formatted}</div>;
+      if (type === 3) {
+        operation.sign = "-";
+        operation.color = "text-red-400";
+      } else if (type > 0 && type < 5) {
+        operation.sign = "+";
+        operation.color = "text-green-400";
+      }
+
+      // value is in cents, transform to dollars and format to 2 decimal places
+      const formatted = `${operation.sign} $ ${(value / 100).toFixed(2)}`;
+
+      return <span className={operation.color}>{formatted}</span>;
     },
   },
   {

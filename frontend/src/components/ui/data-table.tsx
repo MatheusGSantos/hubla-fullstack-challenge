@@ -32,6 +32,7 @@ import {
 import { Button } from "./button";
 import Link from "next/link";
 import { useMemo } from "react";
+import { Skeleton } from "./skeleton";
 
 interface DataTableProps<TData, TValue> {
   readonly columns: ColumnDef<TData, TValue>[];
@@ -226,5 +227,43 @@ export function DataTable<TData, TValue>({
 
       {usePagination && <DataTablePagination table={table} />}
     </>
+  );
+}
+
+export function LoadingTable() {
+  return (
+    <div>
+      <Skeleton className="h-8 mb-2" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+      <Skeleton className="h-8" />
+    </div>
+  );
+}
+
+export function LoadingPagination() {
+  return (
+    <div className="flex items-center justify-between px-2">
+      <div className="flex items-center justify-between flex-1 space-x-6 lg:space-x-8">
+        <div className="flex items-center space-x-2">
+          <Skeleton className="h-8 w-[70px]" />
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Skeleton className="h-8 w-[100px]" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+        </div>
+      </div>
+    </div>
   );
 }
