@@ -3,7 +3,6 @@ import { fetchTransactionsByUpload } from "@/services/fetchTransactionsByUpload"
 import { TABLE_COLUMNS } from "./columns";
 
 export default async function Content({ id }: Readonly<{ id: string }>) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const { transactions, balances } = await fetchTransactionsByUpload({
     uploadId: Number(id),
   });

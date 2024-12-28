@@ -19,10 +19,7 @@ export function fetchTransactionsByUpload({
   uploadId,
 }: FetchTransctionsByUploadIdConfig): Promise<Response> {
   return api
-    .get("transactions", {
-      searchParams: {
-        uploadId,
-      },
+    .get(`uploads/${uploadId}/transactions`, {
       cache: "no-cache",
     })
     .json();

@@ -66,6 +66,38 @@ export class UploadsService {
     );
   }
 
+  async findTransactionsByUploadId(uploadId: number) {
+    const transactions = await this.prisma.transaction.findMany({
+      where: { uploadId },
+      orderBy: { id: "desc" },
+    });
+
+    // Calculate balances
+    const { producerBalance, afiliatesBalance } = transactions.reduce(
+      (acc, transaction) => {
+        const amount = transaction.value;
+        switch (transaction.type) {
+          case 1:
+            acc.producerBalance += amount;
+            break;
+          case 2:
+            acc.afiliatesBalance += amount;
+            break;
+          case 3:
+            acc.afiliatesBalance -= amount;
+            break;
+          case 4:
+            acc.producerBalance += amount;
+            break;
+        }
+        return acc;
+      },
+      { producerBalance: 0, afiliatesBalance: 0 },
+    );
+
+    return { transactions, balances: { producerBalance, afiliatesBalance } };
+  }
+
   findOne(id: number) {
     return this.prisma.upload.findUnique({ where: { id } });
   }

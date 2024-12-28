@@ -46,6 +46,11 @@ export class UploadsController {
     return this.uploadsService.findAll({ page, perPage });
   }
 
+  @Get([":id/transactions"])
+  findTransactionsByUpload(@Param("id") id: number) {
+    return this.uploadsService.findTransactionsByUploadId(id);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: number) {
     return this.uploadsService.findOne(id);
