@@ -31,10 +31,7 @@ export class TransactionsController {
     @Query("uploadId") uploadId?: number,
   ) {
     if (uploadId) {
-      return this.transactionsService.findManyByUploadId(uploadId, {
-        page,
-        perPage,
-      });
+      return this.transactionsService.findManyByUploadId(uploadId);
     }
     return this.transactionsService.findAll({ page, perPage });
   }

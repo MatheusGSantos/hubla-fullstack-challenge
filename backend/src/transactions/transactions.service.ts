@@ -32,22 +32,36 @@ export class TransactionsService {
     return this.prisma.transaction.findUnique({ where: { id } });
   }
 
-  findManyByUploadId(
-    uploadId: number,
-    { page, perPage }: { page: number; perPage: number },
-  ) {
-    const paginate = createPaginator({ perPage });
+  async findManyByUploadId(uploadId: number) {
+    const transactions = await this.prisma.transaction.findMany({
+      where: { uploadId },
+      orderBy: { id: "desc" },
+    });
 
-    return paginate<ReadTransactionDto, Prisma.TransactionFindManyArgs>(
-      this.prisma.transaction,
-      {
-        where: { uploadId },
-        orderBy: { id: "desc" },
+    // Calculate balances
+    const { producerBalance, afiliatesBalance } = transactions.reduce(
+      (acc, transaction) => {
+        const amount = transaction.value;
+        switch (transaction.type) {
+          case 1:
+            acc.producerBalance += amount;
+            break;
+          case 2:
+            acc.afiliatesBalance += amount;
+            break;
+          case 3:
+            acc.afiliatesBalance -= amount;
+            break;
+          case 4:
+            acc.producerBalance += amount;
+            break;
+        }
+        return acc;
       },
-      {
-        page,
-      },
+      { producerBalance: 0, afiliatesBalance: 0 },
     );
+
+    return { transactions, balances: { producerBalance, afiliatesBalance } };
   }
 
   update(id: number, updateTransactionDto: UpdateTransactionDto) {
