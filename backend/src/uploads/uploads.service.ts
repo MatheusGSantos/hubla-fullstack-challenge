@@ -3,7 +3,7 @@ import { CreateUploadDto } from "./dto/create-upload.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma } from "@prisma/client";
 import { TransactionsService } from "src/transactions/transactions.service";
-import { BadRequestError } from "src/errors/bad-request.error";
+import { BadRequestError } from "src/errors/BadRequest.error";
 import { createPaginator } from "prisma-pagination";
 import { ReadUploadDto } from "./dto/read-upload.dto";
 

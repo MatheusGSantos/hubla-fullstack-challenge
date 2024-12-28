@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { BadRequestError } from "src/errors/bad-request.error";
+import { BadRequestError } from "src/errors/BadRequest.error";
 
 @Injectable()
 export class BadRequestInterceptor implements NestInterceptor {
