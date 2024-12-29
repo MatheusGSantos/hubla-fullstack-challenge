@@ -10,11 +10,11 @@ import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 
 @Module({
   imports: [
+    PrismaModule,
+    AuthModule,
     UploadsModule,
     TransactionsModule,
-    PrismaModule,
     UserModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [
