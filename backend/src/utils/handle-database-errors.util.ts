@@ -1,7 +1,7 @@
-import { DatabaseError } from "src/errors/DatabaseError";
-import { PrismaClientError } from "src/errors/PrismaClientError";
-import { UniqueConstraintError } from "src/errors/UniqueConstraintError";
-import { PrismaErrors } from "src/prisma/prisma.errors";
+import { DatabaseError } from "../errors/DatabaseError";
+import { PrismaClientError } from "../errors/PrismaClientError";
+import { UniqueConstraintError } from "../errors/UniqueConstraintError";
+import { PrismaErrors } from "../prisma/prisma.errors";
 
 export const handleDatabaseErrors = (e: PrismaClientError): Error => {
   switch (e.code) {

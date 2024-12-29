@@ -12,7 +12,7 @@ import { TransactionsService } from "./transactions.service";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
 import { ReadTransactionDto } from "./dto/read-transaction.dto";
-import { ApiPaginatedResponse } from "src/decorators/api-paginated-response.decorator";
+import { ApiPaginatedResponse } from "../decorators/api-paginated-response.decorator";
 
 @Controller("transactions")
 export class TransactionsController {

@@ -12,8 +12,8 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadsService } from "./uploads.service";
-import { BadRequestError } from "src/errors/BadRequest.error";
-import { ApiPaginatedResponse } from "src/decorators/api-paginated-response.decorator";
+import { BadRequestError } from "../errors/BadRequest.error";
+import { ApiPaginatedResponse } from "../decorators/api-paginated-response.decorator";
 import { ReadUploadDto } from "./dto/read-upload.dto";
 
 @Controller("uploads")

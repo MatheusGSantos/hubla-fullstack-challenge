@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTransactionDto } from "./dto/create-transaction.dto";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
-import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { createPaginator } from "prisma-pagination";
 import { ReadTransactionDto } from "./dto/read-transaction.dto";
 import { Prisma } from "@prisma/client";
