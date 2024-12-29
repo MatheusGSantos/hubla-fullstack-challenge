@@ -1,6 +1,12 @@
-import { ExecutionContext, Inject, Injectable } from "@nestjs/common";
+import {
+  ExecutionContext,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { of } from "rxjs";
+import { Response } from "express";
 import { map, mergeMap, takeWhile, tap } from "rxjs/operators";
 
 import { AuthGuard } from "@nestjs/passport";
@@ -60,5 +66,18 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
       ),
       map((user) => Boolean(user)),
     );
+  }
+
+  handleRequest(err, user, info, context: ExecutionContext) {
+    const res = context.switchToHttp().getResponse<Response>();
+
+    if (err || !user) {
+      // Clear the cookie when the token is invalid/missing/expired
+      res.clearCookie("jwt");
+
+      throw new UnauthorizedException("Invalid credentials. Please log in.");
+    }
+
+    return user;
   }
 }
