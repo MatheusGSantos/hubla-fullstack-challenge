@@ -3,10 +3,26 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UploadsModule } from "./uploads/uploads.module";
 import { TransactionsModule } from "./transactions/transactions.module";
+import { PrismaModule } from "./prisma/prisma.module";
+import { UserModule } from "./users/users.module";
+import { AuthModule } from "./auth/auth.module";
+import { JwtAuthGuard } from "./auth/jwt-auth.guard";
 
 @Module({
-  imports: [UploadsModule, TransactionsModule],
+  imports: [
+    UploadsModule,
+    TransactionsModule,
+    PrismaModule,
+    UserModule,
+    AuthModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: "APP_GUARD",
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
