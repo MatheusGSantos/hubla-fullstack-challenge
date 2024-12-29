@@ -40,6 +40,6 @@ export class TransactionsService {
   }
 
   remove(id: number) {
-    return this.prisma.transaction.delete({ where: { id } });
+    this.prisma.transaction.delete({ where: { id } });
   }
 }
