@@ -1,7 +1,7 @@
 import requests
 
 url = "http://localhost:8000/uploads"  # URL da API
-file_path = "./sales.txt"  # Substitua pelo caminho do arquivo
+file_path = "../sales.txt"  # Substitua pelo caminho do arquivo
 
 with open(file_path, "rb") as file:
     files = {
