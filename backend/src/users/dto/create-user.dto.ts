@@ -22,5 +22,6 @@ export class CreateUserDto extends User {
   password: string;
 
   @IsString()
+  @IsNotEmpty()
   name: string;
 }

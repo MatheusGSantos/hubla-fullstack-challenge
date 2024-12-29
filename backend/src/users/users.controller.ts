@@ -1,15 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  UseGuards,
-  Request,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Req } from "@nestjs/common";
 import { UserService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Public } from "../auth/public.decorator";
+import { AuthRequest } from "src/auth/model/AuthRequest";
 
 @Controller("users")
 export class UserController {
@@ -23,7 +17,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get("me")
-  findCurrentUser(@Request() req) {
+  findCurrentUser(@Req() req: AuthRequest) {
     const user = req.user;
     return user;
   }
