@@ -5,7 +5,8 @@ import {
   NestInterceptor,
   UnauthorizedException,
 } from "@nestjs/common";
-import { catchError, Observable } from "rxjs";
+import { Observable } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { UnauthorizedError } from "../errors/UnauthorizedError";
 
 @Injectable()
