@@ -73,7 +73,11 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 
     if (err || !user) {
       // Clear the cookie when the token is invalid/missing/expired
-      res.clearCookie("jwt");
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      });
 
       throw new UnauthorizedException("Invalid credentials. Please log in.");
     }
