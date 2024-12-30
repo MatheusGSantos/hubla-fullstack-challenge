@@ -27,15 +27,8 @@ export class UploadsService {
       // parse each line of the file
       const lines = buffer.toString().split("\n");
 
-      console.log("AAAAA", lines);
-
       for (const line of lines) {
         if (line.length) {
-          console.log("BBBBB", {
-            line,
-            transactionType: +line[0],
-            timestamp: line.slice(1, 26),
-          });
           const transactionType = +line[0];
           const timestamp = new Date(line.slice(1, 26)).toISOString();
           const description = line.slice(26, 56).trim();
