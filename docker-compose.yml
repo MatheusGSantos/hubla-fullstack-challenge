@@ -22,6 +22,7 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/hubla
+      - JWT_SECRET="aksdo23joi5j234otb32o4itvb4813uc34hvt13839"
     depends_on:
       - postgres
     healthcheck:
