@@ -20,7 +20,7 @@ Compose or locally. Below are the instructions for both methods.
 2. Start the services using Docker Compose:
 
    ```bash
-   docker-compose up --build
+   docker-compose up -d --build
    ```
 
 3. Access the frontend at http://localhost:3000 and the backend at
@@ -29,6 +29,9 @@ Compose or locally. Below are the instructions for both methods.
 ## Running Locally (recommended)
 
 ### Backend
+
+Assuming you have ran the docker-compose and have only the postgres container
+running.
 
 1. From the root folder
 
@@ -42,15 +45,22 @@ Compose or locally. Below are the instructions for both methods.
    root folder). Since this is an example project, i kept them there so it's
    easier to run, but feel free to change the values.
 
-3. Start the backend server:
+3. Migrate database:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+4. Start the backend server:
 
    ```bash
    npm run start:dev
    ```
 
-4. The backend server will be running at http://localhost:8000.
+5. The backend server will be running at http://localhost:8000.
 
-5.
+6. You can go to http://localhost:8000/api/ in your browser to see the swagger
+   docs or run `npx prisma studio` to see your database in the browser client
 
 ### Frontend
 
