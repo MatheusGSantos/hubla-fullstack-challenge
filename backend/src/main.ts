@@ -6,6 +6,7 @@ import { ConflictInterceptor } from "./interceptors/conflict.interceptor";
 import { DatabaseInterceptor } from "./interceptors/database.interceptor";
 import { UnauthorizedInterceptor } from "./interceptors/unauthorized.interceptor";
 import * as cookieParser from "cookie-parser";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -31,6 +32,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new NotFoundInterceptor());
   app.useGlobalInterceptors(new ConflictInterceptor());
   app.useGlobalInterceptors(new DatabaseInterceptor());
+
+  const config = new DocumentBuilder()
+    .setTitle("NestJS API")
+    .setDescription("The NestJS API description")
+    .setVersion("1.0")
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup("api", app, documentFactory);
 
   await app.listen(process.env.PORT ?? 8000);
 }

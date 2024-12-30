@@ -15,11 +15,17 @@ import { UploadsService } from "./uploads.service";
 import { BadRequestError } from "../errors/BadRequest.error";
 import { ApiPaginatedResponse } from "../decorators/api-paginated-response.decorator";
 import { ReadUploadDto } from "./dto/read-upload.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("uploads")
 @Controller("uploads")
 export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
+  /**
+   * Needs to be a .txt file and not more than 500kb, formdata key should be "file"
+   * @param file The file to upload
+   * */
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor("file"))
@@ -37,6 +43,11 @@ export class UploadsController {
     this.uploadsService.create({ file });
   }
 
+  /**
+   * @param page The page number
+   * @param perPage The number of items per page
+   * @returns A paginated list of uploads
+   * */
   @Get()
   @ApiPaginatedResponse(ReadUploadDto)
   findAll(
@@ -46,6 +57,10 @@ export class UploadsController {
     return this.uploadsService.findAll({ page, perPage });
   }
 
+  /**
+   * @param id The id of the upload
+   * @returns A list of transactions for the upload
+   * */
   @Get([":id/transactions"])
   findTransactionsByUpload(@Param("id") id: number) {
     return this.uploadsService.findTransactionsByUploadId(id);
