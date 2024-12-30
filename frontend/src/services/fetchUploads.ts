@@ -12,11 +12,11 @@ interface Response {
   meta: Meta;
 }
 
-export function fetchUploads({
+export async function fetchUploads({
   currentPage = 1,
   perPage = 10,
 }: FetchUploadsConfig): Promise<Response> {
-  return api
+  return await api
     .get("uploads", {
       searchParams: {
         page: currentPage,

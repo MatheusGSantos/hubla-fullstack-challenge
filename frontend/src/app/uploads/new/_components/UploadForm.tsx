@@ -28,7 +28,6 @@ export function UploadForm() {
         router.push("/uploads/success");
       })
       .catch((error) => {
-        console.log(typeof error, error);
         setLoading(false);
         setError(true);
         showToast("error");

@@ -29,7 +29,7 @@ export default function Login() {
           className="flex flex-col items-center justify-center gap-6 w-full my-6"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-4 w-full">
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
@@ -38,7 +38,7 @@ export default function Login() {
               {...register("email")}
             />
           </div>
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-4 w-full">
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"

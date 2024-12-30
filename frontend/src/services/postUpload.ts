@@ -1,9 +1,9 @@
 import { api } from "@/lib/api";
 
-export function postUpload(file: File) {
+export async function postUpload(file: File) {
   const formData = new FormData();
   formData.append("file", file);
-  return api
+  return await api
     .post("uploads", {
       body: formData,
     })

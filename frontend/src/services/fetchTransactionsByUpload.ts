@@ -15,10 +15,10 @@ interface Response {
   };
 }
 
-export function fetchTransactionsByUpload({
+export async function fetchTransactionsByUpload({
   uploadId,
 }: FetchTransctionsByUploadIdConfig): Promise<Response> {
-  return api
+  return await api
     .get(`uploads/${uploadId}/transactions`, {
       cache: "no-cache",
     })
