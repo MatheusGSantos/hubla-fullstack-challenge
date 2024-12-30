@@ -27,7 +27,7 @@ export class AuthController {
     res.cookie("jwt", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // lax for local testing
     });
 
     return res.send({ message: "Login successful" });
