@@ -5,7 +5,7 @@ Compose or locally. Below are the instructions for both methods.
 
 ## Prerequisites
 
-- Node.js (version 14 or higher)
+- Node.js (version 20 or higher)
 - Docker and Docker Compose
 
 ## Running with Docker Compose
