@@ -1,10 +1,18 @@
 import { DataTable } from "@/components/ui/data-table";
 import { fetchTransactionsByUpload } from "@/services/fetchTransactionsByUpload";
 import { TABLE_COLUMNS } from "./columns";
+import { cookies } from "next/headers";
 
 export default async function Content({ id }: Readonly<{ id: string }>) {
+  const cookieStore = cookies();
+
+  const jwt = cookieStore.get("jwt")?.value;
+  if (!jwt) {
+    throw new Error("Unauthorized: JWT token is missing");
+  }
   const { transactions, balances } = await fetchTransactionsByUpload({
     uploadId: Number(id),
+    jwt,
   });
 
   return (
