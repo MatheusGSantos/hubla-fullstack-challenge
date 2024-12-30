@@ -27,9 +27,9 @@ export function UploadForm() {
       await postUpload(selectedFile);
       router.push("/uploads/success");
     } catch (error) {
-      setLoading(false);
       setError(true);
       showToast("error", await parseServerError(error));
+      setLoading(false);
     }
   }
 

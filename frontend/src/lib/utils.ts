@@ -28,15 +28,19 @@ export const showToast = (toastType: "error" | "success", message?: string) => {
 
 // parse ky error message
 export async function parseServerError(error: unknown) {
-  if (error instanceof HTTPError) {
-    const parsedError = await error?.response?.json();
+  try {
+    if (error instanceof HTTPError) {
+      const parsedError = await error?.response?.json();
 
-    if (Array.isArray(parsedError?.message)) {
-      return parsedError.message[0];
+      if (Array.isArray(parsedError?.message)) {
+        return parsedError.message[0];
+      }
+
+      return parsedError?.message ?? DEFAULT_ERROR_MESSAGE;
     }
 
-    return parsedError?.message ?? DEFAULT_ERROR_MESSAGE;
+    return DEFAULT_ERROR_MESSAGE;
+  } catch {
+    return DEFAULT_ERROR_MESSAGE;
   }
-
-  return DEFAULT_ERROR_MESSAGE;
 }
