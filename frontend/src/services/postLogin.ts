@@ -12,6 +12,4 @@ export async function postLogin({ email, password }: Payload): Promise<void> {
       json: { email, password },
     })
     .json();
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
 }
