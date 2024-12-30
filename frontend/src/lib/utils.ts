@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { HTTPError } from "ky";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
@@ -24,3 +25,18 @@ export const showToast = (toastType: "error" | "success", message?: string) => {
       toast(message);
   }
 };
+
+// parse ky error message
+export async function parseServerError(error: unknown) {
+  if (error instanceof HTTPError) {
+    const parsedError = await error?.response?.json();
+
+    if (Array.isArray(parsedError?.message)) {
+      return parsedError.message[0];
+    }
+
+    return parsedError?.message ?? DEFAULT_ERROR_MESSAGE;
+  }
+
+  return DEFAULT_ERROR_MESSAGE;
+}
