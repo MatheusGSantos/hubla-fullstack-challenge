@@ -1,6 +1,7 @@
 import ky from "ky";
 import { getCookie } from "cookies-next";
 import type { CookiesFn } from "cookies-next/lib/types";
+import { redirect } from "next/navigation";
 
 export const api = ky.create({
   prefixUrl: "http://localhost:8000",
@@ -21,6 +22,18 @@ export const api = ky.create({
         if (token) {
           request.headers.set("Cookie", `jwt=${token}`);
         }
+      },
+    ],
+    beforeError: [
+      (error) => {
+        if (error.response?.status === 401) {
+          if (typeof window !== "undefined") {
+            window.location.href = "/api/auth/signout";
+          } else {
+            redirect("/api/auth/signout");
+          }
+        }
+        return error;
       },
     ],
   },
