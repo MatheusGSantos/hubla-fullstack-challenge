@@ -29,9 +29,9 @@ async function bootstrap() {
 
   // Interceptors
   app.useGlobalInterceptors(new UnauthorizedInterceptor());
+  app.useGlobalInterceptors(new DatabaseInterceptor());
   app.useGlobalInterceptors(new NotFoundInterceptor());
   app.useGlobalInterceptors(new ConflictInterceptor());
-  app.useGlobalInterceptors(new DatabaseInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle("NestJS API")

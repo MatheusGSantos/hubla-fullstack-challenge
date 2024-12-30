@@ -51,7 +51,9 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
         of(request).pipe(
           map((req) => {
             if (!req.user) {
-              throw Error("User was not found in request.");
+              throw new UnauthorizedException(
+                "Invalid credentials. Please log in.",
+              );
             }
 
             return req.user;
@@ -60,6 +62,11 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
             this.userService.findById(userFromJwt.id),
           ),
           tap((user) => {
+            if (!user) {
+              throw new UnauthorizedException(
+                "Invalid credentials. Please log in.",
+              );
+            }
             request.principal = user;
           }),
         ),

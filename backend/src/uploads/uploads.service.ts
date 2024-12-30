@@ -18,12 +18,12 @@ export class UploadsService {
     const data: Prisma.UploadCreateInput = {
       filename: createUploadDto.file.originalname,
     };
-
-    const { id } = await this.prisma.upload.create({ data });
-
-    const { buffer } = createUploadDto.file;
+    let uploadId: number;
 
     try {
+      const { id } = await this.prisma.upload.create({ data });
+      uploadId = id;
+      const { buffer } = createUploadDto.file;
       // parse each line of the file
       const lines = buffer.toString().split("\n");
 
@@ -41,12 +41,14 @@ export class UploadsService {
             description,
             value,
             seller,
-            uploadId: id,
+            uploadId,
           });
         }
       }
     } catch {
-      await this.prisma.upload.delete({ where: { id } });
+      if (uploadId) {
+        await this.prisma.upload.delete({ where: { id: uploadId } });
+      }
 
       throw new BadRequestError("Invalid file format");
     }

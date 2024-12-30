@@ -40,7 +40,8 @@ export class UploadsController {
       );
     }
 
-    this.uploadsService.create({ file });
+    await this.uploadsService.create({ file });
+    return { message: "Upload successful" };
   }
 
   /**

@@ -10,6 +10,7 @@ import { User } from "./entities/user.entity";
 // Bcrypt
 import * as bcrypt from "bcrypt";
 import { PrismaService } from "../prisma/prisma.service";
+import { DatabaseError } from "src/errors/DatabaseError";
 
 @Injectable()
 export class UserService {
@@ -21,12 +22,20 @@ export class UserService {
       password: await bcrypt.hash(createUserDto.password, 10),
     };
 
-    const createdUser = await this.prisma.user.create({ data });
+    try {
+      const createdUser = await this.prisma.user.create({ data });
 
-    return {
-      ...createdUser,
-      password: undefined,
-    };
+      return {
+        ...createdUser,
+        password: undefined,
+      };
+    } catch (error) {
+      if (error.code === "P2002") {
+        throw new DatabaseError("Email already exists");
+      }
+
+      throw error;
+    }
   }
 
   findById(id: number) {
