@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { FileInput } from "@/components/ui/fileInput";
 import { Loader } from "@/components/ui/loader";
-import { showToast } from "@/lib/utils";
+import { parseServerError, showToast } from "@/lib/utils";
 import { postUpload } from "@/services/postUpload";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,20 +18,19 @@ export function UploadForm() {
     setSelectedFile(file);
   }
 
-  function handleUpload() {
+  async function handleUpload() {
     if (!selectedFile) return;
 
     setLoading(true);
 
-    postUpload(selectedFile)
-      .then(() => {
-        router.push("/uploads/success");
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(true);
-        showToast("error");
-      });
+    try {
+      await postUpload(selectedFile);
+      router.push("/uploads/success");
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      showToast("error", await parseServerError(error));
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 export const api = ky.create({
   prefixUrl: "http://localhost:8000",
   credentials: "include",
+  cache: "no-store",
   hooks: {
     beforeRequest: [
       async (request) => {
@@ -24,16 +25,19 @@ export const api = ky.create({
         }
       },
     ],
-    beforeError: [
-      (error) => {
-        if (error.response?.status === 401) {
+    afterResponse: [
+      async (req, opt, res) => {
+        const response = await res.json<{ message: string | undefined }>();
+        if (
+          res.status === 401 &&
+          response?.message?.includes("Invalid credentials")
+        ) {
           if (typeof window !== "undefined") {
             window.location.href = "/api/auth/signout";
           } else {
             redirect("/api/auth/signout");
           }
         }
-        return error;
       },
     ],
   },

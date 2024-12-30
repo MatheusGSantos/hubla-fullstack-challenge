@@ -76,7 +76,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
       res.clearCookie("jwt", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // lax for local testing,
       });
 
       throw new UnauthorizedException("Invalid credentials. Please log in.");
