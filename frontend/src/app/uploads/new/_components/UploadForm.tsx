@@ -2,11 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { FileInput } from "@/components/ui/fileInput";
 import { Loader } from "@/components/ui/loader";
-import { DEFAULT_ERROR_MESSAGE } from "@/lib/utils";
+import { showToast } from "@/lib/utils";
 import { postUpload } from "@/services/postUpload";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
 
 export function UploadForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -29,10 +28,10 @@ export function UploadForm() {
         router.push("/uploads/success");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(typeof error, error);
         setLoading(false);
         setError(true);
-        toast.error(DEFAULT_ERROR_MESSAGE);
+        showToast("error");
       });
   }
 
